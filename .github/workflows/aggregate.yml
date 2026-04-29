@@ -27,7 +27,7 @@ jobs:
         run: |
           git config --local user.email "devops-bot@local"
           git config --local user.name "DevOps Bot"
-          git add *.md
+          git add .
           if ! git diff --staged --quiet; then
             git commit -m "Aggregated NotebookLM docs: $(date +'%Y-%m-%d')"
             git push
