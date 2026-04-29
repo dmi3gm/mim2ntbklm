@@ -3,7 +3,7 @@
 Скачивает, объединяет и режет .md что бы вписаться в 500 000 слов.
 Игнорит папки начинающиеся с ".".
 
-Работает на основе [workflow](.github/workflows/aggregate.yml)  aggregate.yml по расписанию или по кнопке Actions -> Run workflow.
+По расписанию или по кнопке [Run workflow](https://github.com/dmi3gm/repo-to-notebooklm/actions/workflows/aggregate.yml) Запускается [workflow](.github/workflows/aggregate.yml). Форкайте, копируйте, пользуйтесь. 
 
 Чтобы добавить репо в обработку нужно указать его в списке под этим заголовком
 ## Repo list
