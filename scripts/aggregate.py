@@ -4,7 +4,6 @@ import subprocess
 import re
 
 # Настройки
-LIMIT_SIZE_MB = 8  # Порог разделения файла
 OUT_DIR = "out_ntbklm"
 
 def log(msg):
@@ -53,14 +52,15 @@ def split_content_by_words(content, max_words=450000):
         
         # Если это не конец файла, ищем ближайший заголовок ##, чтобы не рвать по живому
         if end_idx < len(content):
-            # Ищем ближайший ## в радиусе 10% от размера чанка
-            search_area = content[end_idx - 5000 : end_idx + 5000]
+            # Ищем ближайший ## в радиусе 10000 символов вокруг предполагаемого разрыва
+            search_start = max(0, end_idx - 5000)
+            search_area = content[search_start : end_idx + 5000]
             header_match = list(re.finditer(r'\n##\s', search_area))
             
             if header_match:
                 # Берем последний найденный заголовок в этой области
                 relative_split = header_match[-1].start()
-                end_idx = (end_idx - 5000) + relative_split
+                end_idx = search_start + relative_split
         
         chunks.append(content[start_idx:end_idx].strip())
         start_idx = end_idx
@@ -85,7 +85,8 @@ def process_repo(repo_url):
             combined_content.append(content)
     
     full_text = "".join(combined_content)
-    chunks = split_content(full_text, repo_name)
+    # Исправлен вызов функции здесь:
+    chunks = split_content_by_words(full_text)
     
     os.makedirs(OUT_DIR, exist_ok=True)
     for i, chunk in enumerate(chunks):
