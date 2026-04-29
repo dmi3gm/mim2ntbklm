@@ -11,7 +11,7 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   # СПИСОК РЕПОЗИТОРИЕВ ЧЕРЕЗ ПРОБЕЛ
-  REPOS: "https://github.com/ailev/FPF.git https://github.com/TserenTserenov/ZP.git https://github.com/TserenTserenov/SPF.git https://github.com/TserenTserenov/PACK-MIM.git https://github.com/TserenTserenov/PACK-autonomous-agents.git https://github.com/TserenTserenov/PACK-education.git https://github.com/TserenTserenov/FMT-s2r.git https://github.com/TserenTserenov/PACK-digital-platform.git"
+  REPOS: "https://github.com/dmi3gm/DS-ecosystem-development.git https://github.com/ailev/FPF.git https://github.com/TserenTserenov/ZP.git https://github.com/TserenTserenov/SPF.git https://github.com/TserenTserenov/PACK-MIM.git https://github.com/TserenTserenov/PACK-autonomous-agents.git https://github.com/TserenTserenov/PACK-education.git https://github.com/TserenTserenov/FMT-s2r.git https://github.com/TserenTserenov/PACK-digital-platform.git"
 
 jobs:
   aggregate:
