@@ -11,7 +11,7 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   # СПИСОК РЕПОЗИТОРИЕВ ЧЕРЕЗ ПРОБЕЛ
-  REPOS: "https://github.com/ailev/FPF https://github.com/another/repo"
+  REPOS: "https://github.com/TserenTserenov/ZP.git https://github.com/TserenTserenov/SPF.git"
 
 jobs:
   aggregate:
