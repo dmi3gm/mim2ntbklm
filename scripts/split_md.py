@@ -46,7 +46,7 @@ def process():
 
     for i in range(parts):
         start, end = points[i], points[i+1]
-        file_name = f"part_{i+1}.md"
+        file_name = f"FPF-Spec-part_{i+1}.md"
         file_path = os.path.join(out_dir, file_name)
         
         with open(file_path, 'w', encoding='utf-8') as f:
