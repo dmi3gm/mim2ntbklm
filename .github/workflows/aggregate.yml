@@ -1,0 +1,36 @@
+name: Aggregate Repos for NotebookLM
+
+on:
+  workflow_dispatch: # Запуск кнопкой
+  schedule:
+    - cron: '0 2 * * 1' # Раз в неделю (ночь понедельника)
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  # СПИСОК РЕПОЗИТОРИЕВ ЧЕРЕЗ ПРОБЕЛ
+  REPOS: "https://github.com/ailev/FPF https://github.com/another/repo"
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Aggregator
+        run: python3 scripts/aggregate.py
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "devops-bot@local"
+          git config --local user.name "DevOps Bot"
+          git add out_ntbklm/*.md
+          if ! git diff --staged --quiet; then
+            git commit -m "Aggregated NotebookLM docs: $(date +'%Y-%m-%d')"
+            git push
+          else
+            echo "No changes found."
+          fi
