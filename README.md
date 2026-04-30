@@ -9,12 +9,7 @@
 По расписанию или по кнопке [Run workflow](https://github.com/dmi3gm/repo-to-notebooklm/actions/workflows/aggregate.yml) Запускается [workflow](.github/workflows/aggregate.yml) и [скриптом](scripts/aggregate.py) обрабатывает список ниже
 
 ## Repo list
-- <https://github.com/dmi3gm/DS-ecosystem-development.git>
+
 - <https://github.com/ailev/FPF.git>
 - <https://github.com/TserenTserenov/ZP.git>
 - <https://github.com/TserenTserenov/SPF.git>
-- <https://github.com/TserenTserenov/PACK-MIM.git>
-- <https://github.com/TserenTserenov/PACK-autonomous-agents.git>
-- <https://github.com/TserenTserenov/PACK-education.git>
-- <https://github.com/TserenTserenov/FMT-s2r.git>
-- <https://github.com/TserenTserenov/PACK-digital-platform.git>
