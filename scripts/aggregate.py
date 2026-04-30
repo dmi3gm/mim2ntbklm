@@ -72,31 +72,39 @@ def process_repo(repo_url):
     tmp_path = f"tmp_{repo_name}"
     
     log(f"Клонирование {repo_url}...")
-    subprocess.run(["git", "clone", "--depth", "1", repo_url, tmp_path], check=True)
+    try:
+        subprocess.run(["git", "clone", "--depth", "1", repo_url, tmp_path], check=True)
+    except subprocess.CalledProcessError as e:
+        log(f"Ошибка клонирования {repo_url}. Пропускаем... ({e})")
+        if os.path.exists(tmp_path):
+            shutil.rmtree(tmp_path)
+        return
     
-    md_files = get_md_files(tmp_path)
-    combined_content = []
-    
-    for rel_path, full_path in md_files:
-        with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
-            content = f.read()
-            # Добавляем мета-заголовок пути для NotebookLM
-            combined_content.append(f"\n\n# SOURCE_FILE: {rel_path}\n---\n")
-            combined_content.append(content)
-    
-    full_text = "".join(combined_content)
-    # Исправлен вызов функции здесь:
-    chunks = split_content_by_words(full_text)
-    
-    os.makedirs(OUT_DIR, exist_ok=True)
-    for i, chunk in enumerate(chunks):
-        suffix = f"_part_{i+1}" if len(chunks) > 1 else ""
-        out_file = os.path.join(OUT_DIR, f"{repo_name}{suffix}.md")
-        with open(out_file, 'w', encoding='utf-8') as f:
-            f.write(chunk)
-        log(f"Сохранен файл: {out_file}")
-
-    shutil.rmtree(tmp_path)
+    try:
+        md_files = get_md_files(tmp_path)
+        combined_content = []
+        
+        for rel_path, full_path in md_files:
+            with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+                # Добавляем мета-заголовок пути для NotebookLM
+                combined_content.append(f"\n\n# SOURCE_FILE: {rel_path}\n---\n")
+                combined_content.append(content)
+        
+        full_text = "".join(combined_content)
+        # Исправлен вызов функции здесь:
+        chunks = split_content_by_words(full_text)
+        
+        os.makedirs(OUT_DIR, exist_ok=True)
+        for i, chunk in enumerate(chunks):
+            suffix = f"_part_{i+1}" if len(chunks) > 1 else ""
+            out_file = os.path.join(OUT_DIR, f"{repo_name}{suffix}.md")
+            with open(out_file, 'w', encoding='utf-8') as f:
+                f.write(chunk)
+            log(f"Сохранен файл: {out_file}")
+    finally:
+        if os.path.exists(tmp_path):
+            shutil.rmtree(tmp_path)
 
 def get_repos_from_readme():
     repos = []
@@ -110,8 +118,8 @@ def get_repos_from_readme():
                     continue
                 if in_repo_list and line.startswith("##"):
                     break
-                if in_repo_list and line.startswith("- http"):
-                    repo_url = line.lstrip("- ").strip()
+                if in_repo_list and (line.startswith("- http") or line.startswith("- <http")):
+                    repo_url = line.lstrip("- ").strip(" <>")
                     repos.append(repo_url)
     except Exception as e:
         log(f"Ошибка чтения README.md: {e}")
